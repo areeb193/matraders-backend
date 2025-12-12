@@ -1,0 +1,342 @@
+{
+  "panels": [
+    {
+      "name": "Tiger Neo 3.0",
+      "brand": "Jinko",
+      "power": "650-670 W",
+      "efficiency": "24.8%",
+      "price": "PKR 19,500",
+      "features": ["Bificial options", "Designed for high loads", "Cell tech: N-type TOPCon"],
+      "image": "/jinko2.jpg"
+    },{
+      "name": "Tiger Pro",
+      "brand": "Jinko",
+      "power": "540-560 W",
+      "efficiency": "22.4%",
+      "price": "PKR 16,500",
+      "features": ["Monocrystalline", "Tier-1 Brand", "Cell tech: P-type mono PERC"],
+      "image": "/jinko1.jpg"
+    },{
+      "name": "Hi-MO 6",
+      "brand": "Longi",
+      "power": "550-580 W",
+      "efficiency": "23.2%",
+      "price": "PKR 20,800",
+      "features": ["Mainstream utility", "High Module Strength", "Cell tech: large-format M10 wafer"],
+      "image": "/longi3.png"
+    },{
+      "name": "Hi-MO 5",
+      "brand": "Longi",
+      "power": "580-600 W",
+      "efficiency": "23.8%",
+      "price": "PKR 22,000",
+      "features": ["Reliability", "Improved power density", "Cell tech: large wafers", "Anti-reflective coating"],
+      "image": "/longi1.jpg"
+    },{
+      "name": "CS3W",
+      "brand": "Canadian Solar",
+      "power": "395-455 W",
+      "efficiency": "20.4%",
+      "price": "PKR 14,400",
+      "features": ["Cell tech: mono PERC", "Low NMOT", "High Power Density"],
+      "image": "/candian1.jpg"
+    },{
+      "name": "CS6.2",
+      "brand": "Canadian Solar",
+      "power": "620-660 W",
+      "efficiency": "21.3%",
+      "price": "PKR 21,500",
+      "features": ["Bificial", "Cell tech: newer N-type", "High Module Output"],
+      "image": "/candian2.jpg"
+    }
+  ],
+  "inverters": [
+    {
+      "name": "Solis 3P10K-4G",
+      "brand": "Solis",
+      "power": "10kW",
+      "efficiency": "98.7%",
+      "price": "PKR 242,000",
+      "features": ["On-grid", "Dual MPPT", "IP65 Protection"],
+      "image": "/capture.png"
+    },
+    {
+      "name": "Solis S5-GR3P10K",
+      "brand": "Solis",
+      "power": "10kW",
+      "efficiency": "98.7%",
+      "price": "PKR 295,000",
+      "features": ["Dual MPPT", "IP66 Protection", "Hybrid"],
+      "image": "/capture1.png"
+    },
+    {
+      "name": "Growatt 10KTL3-X",
+      "brand": "Growatt",
+      "power": "10kW",
+      "efficiency": "98.6%",
+      "price": "PKR 180,000",
+      "features": ["Dual MPPT", "IP66 Protection", "On-grid"],
+      "image": "/capture3.png"
+    },
+      {
+      "name": "Growatt MID 20KTL3-XH",
+      "brand": "Growatt",
+      "power": "20kW",
+      "efficiency": "98.5%",
+      "price": "PKR 390,000",
+      "features": ["Dual MPPT", "IP66 Protection", "Hybrid"],
+      "image": "/capture4.png"
+    },
+      {
+      "name": "Primax Galaxy PV4000",
+      "brand": "Primax",
+      "power": "3kW",
+      "efficiency": "93.2%",
+      "price": "PKR 79,500",
+      "features": ["Hybrid MPPT", "IP66 Protection", "Hybrid"],
+      "image": "/capture5.png"
+    },
+      {
+      "name": "Primax Galaxy PV5000",
+      "brand": "Primax",
+      "power": "5kW",
+      "efficiency": "93.3%",
+      "price": "PKR 105,000",
+      "features": ["Hybrid MPPT", "IP66 Protection", "Hybrid"],
+      "image": "/capture7.png"
+    }
+
+  ],
+  "batteries": [
+    {
+      "name": "Pylontech US3000C",
+      "brand": "Pylontech",
+      "capacity": "3.55kWh",
+      "type": "Lithium",
+      "warranty": "10 Years",
+      "price": "PKR 125,000",
+      "features": ["LiFePO4", "Modular Design", "BMS Built-in", "6000 Cycles"],
+      "image": "/logo.jpeg"
+    },
+    {
+      "name": "AGM Deep Cycle 200Ah",
+      "brand": "Phoenix",
+      "capacity": "200Ah",
+      "type": "AGM",
+      "warranty": "5 Years",
+      "price": "PKR 45,000",
+      "features": ["Maintenance Free", "Deep Cycle", "Leak Proof", "Long Life"],
+      "image": "/logo.jpeg"
+    },
+    {
+      "name": "Tubular Battery 200Ah",
+      "brand": "Osaka",
+      "capacity": "200Ah",
+      "type": "Tubular",
+      "warranty": "3 Years",
+      "price": "PKR 35,000",
+      "features": ["High Capacity", "Robust Design", "Value for Money", "Proven Technology"],
+      "image": "/logo.jpeg"
+    }
+  ],
+  "mounting": [
+    {
+      "name": "Roof Rail Mounting Kit",
+      "brand": "Schletter",
+      "compatibility": "Tile/Metal Roof",
+      "material": "Aluminum",
+      "warranty": "25 Years",
+      "price": "PKR 8,500",
+      "features": ["Corrosion Resistant", "Easy Installation", "Wind Load Tested", "Complete Kit"],
+      "image": "/logo.jpeg"
+    },
+    {
+      "name": "Ground Mount Structure",
+      "brand": "Custom",
+      "compatibility": "Ground Installation",
+      "material": "Galvanized Steel",
+      "warranty": "15 Years",
+      "price": "PKR 12,000",
+      "features": ["Hot Dip Galvanized", "Adjustable Tilt", "Foundation Included", "Weather Resistant"],
+      "image": "/logo.jpeg"
+    }
+  ],
+  "accessories": [
+    {
+      "name": "DC Solar Cable 4mm²",
+      "brand": "Lapp",
+      "specification": "4mm² TUV",
+      "length": "100m Roll",
+      "warranty": "25 Years",
+      "price": "PKR 15,000",
+      "features": ["UV Resistant", "TUV Certified", "Halogen Free", "Temperature Rated"],
+      "image": "/logo.jpeg"
+    },
+    {
+      "name": "MC4 Connectors Pair",
+      "brand": "Multi-Contact",
+      "rating": "30A/1000V",
+      "material": "PPO Plastic",
+      "warranty": "25 Years",
+      "price": "PKR 350",
+      "features": ["Original MC4", "IP67 Rating", "Easy Installation", "Reliable Connection"],
+      "image": "/logo.jpeg"
+    },{
+      "name": "MC4 Connectors Pair",
+      "brand": "Multi-Contact",
+      "rating": "30A/1000V",
+      "material": "PPO Plastic",
+      "warranty": "25 Years",
+      "price": "PKR 350",
+      "features": ["Original MC4", "IP67 Rating", "Easy Installation", "Reliable Connection"],
+      "image": "/logo.jpeg"
+    },{
+      "name": "MC4 Connectors Pair",
+      "brand": "Multi-Contact",
+      "rating": "30A/1000V",
+      "material": "PPO Plastic",
+      "warranty": "25 Years",
+      "price": "PKR 350",
+      "features": ["Original MC4", "IP67 Rating", "Easy Installation", "Reliable Connection"],
+      "image": "/logo.jpeg"
+    },{
+      "name": "MC4 Connectors Pair",
+      "brand": "Multi-Contact",
+      "rating": "30A/1000V",
+      "material": "PPO Plastic",
+      "warranty": "25 Years",
+      "price": "PKR 350",
+      "features": ["Original MC4", "IP67 Rating", "Easy Installation", "Reliable Connection"],
+      "image": "/logo.jpeg"
+    }
+  ],
+  "cameras": [
+    {
+      "name": "Hikvision DS-2CE16D0T-IRP HD Bullet Camera",
+      "brand": "Hikvision",
+      "specification": "2MP 1080p / 3.6mm Lens / IR 20m",
+      "warranty": "2 Years",
+      "price": "PKR 4,800",
+      "features": ["HD Video", "Night Vision", "Weatherproof", "Plug & Play"],
+      "image": "../../images/hikvision_ds2ce16d0t.jpg"
+    },
+    {
+      "name": "Hikvision DS-2CE56D0T-IR Dome Camera",
+      "brand": "Hikvision",
+      "specification": "2MP / 1080p / IR 20m / Indoor Dome",
+      "warranty": "2 Years",
+      "price": "PKR 4,500",
+      "features": ["Compact Design", "Night Vision", "HDTVI Output", "Easy Mounting"],
+      "image": "../../images/hikvision_dome.jpg"
+    },
+    {
+      "name": "Hikvision DS-2CD1023G0E-I IP Camera",
+      "brand": "Hikvision",
+      "specification": "2MP / IP67 / H.265+ / 30m IR",
+      "warranty": "2 Years",
+      "price": "PKR 9,500",
+      "features": ["IP Camera", "PoE Support", "Smart IR", "Weatherproof"],
+      "image": "../../images/hikvision_ip.jpg"
+    },
+    {
+      "name": "Dahua HAC-HFW1200TP Bullet Camera",
+      "brand": "Dahua",
+      "specification": "2MP / 1080p / 3.6mm / IR 30m",
+      "warranty": "2 Years",
+      "price": "PKR 5,200",
+      "features": ["HDCVI", "Metal Body", "Weather Resistant", "BLC, AGC, DWDR"],
+      "image": "../../images/dahua_bullet.jpg"
+    },
+    {
+      "name": "Dahua HAC-HDW1200EM-A Dome Camera",
+      "brand": "Dahua",
+      "specification": "2MP / Built-in Mic / 1080p / IR 50m",
+      "warranty": "2 Years",
+      "price": "PKR 6,200",
+      "features": ["Audio Support", "Night Vision", "Metal Casing", "Full HD Output"],
+      "image": "../../images/dahua_dome.jpg"
+    },
+    {
+      "name": "Dahua IPC-HFW1230S-S4 IP Bullet Camera",
+      "brand": "Dahua",
+      "specification": "2MP / PoE / H.265 / IP67",
+      "warranty": "2 Years",
+      "price": "PKR 9,800",
+      "features": ["Network Camera", "Smart Codec", "Waterproof", "ONVIF Supported"],
+      "image": "../../images/dahua_ip.jpg"
+    },
+    {
+      "name": "CP Plus CP-UNC-T1211 IP Dome Camera",
+      "brand": "CP Plus",
+      "specification": "2.4MP / 1080p / IR 30m / PoE",
+      "warranty": "2 Years",
+      "price": "PKR 8,500",
+      "features": ["Smart IR", "PoE Support", "Wide Angle", "Easy Setup"],
+      "image": "../../images/cpplus_dome.jpg"
+    },
+    {
+      "name": "CP Plus CP-USC-TA24L3 Bullet Camera",
+      "brand": "CP Plus",
+      "specification": "2.4MP / 3.6mm Lens / IR 20m",
+      "warranty": "2 Years",
+      "price": "PKR 6,000",
+      "features": ["HDCVI", "Metal Casing", "Day/Night", "Affordable"],
+      "image": "../../images/cpplus_bullet.jpg"
+    },
+    {
+      "name": "Dahua DH-IPC-HFW2231T-AS-S2",
+      "brand": "Dahua",
+      "specification": "2MP / Starlight / Audio / PoE",
+      "warranty": "2 Years",
+      "price": "PKR 12,000",
+      "features": ["Low Light", "Built-in Mic", "Smart Codec", "PoE Supported"],
+      "image": "../../images/dahua_starlight.jpg"
+    },
+    {
+      "name": "Hikvision DS-2CD1043G0E-I IP Camera",
+      "brand": "Hikvision",
+      "specification": "4MP / H.265 / IR 30m",
+      "warranty": "2 Years",
+      "price": "PKR 13,500",
+      "features": ["4MP Clarity", "PoE", "Weatherproof", "Motion Detection"],
+      "image": "../../images/hikvision_4mp.jpg"
+    },
+    {
+      "name": "Dahua HAC-HFW1509TLMP-A-LED",
+      "brand": "Dahua",
+      "specification": "5MP / Full Color / Mic / LED IR 40m",
+      "warranty": "2 Years",
+      "price": "PKR 14,000",
+      "features": ["Full Color", "Audio", "Smart IR", "IP67"],
+      "image": "../../images/dahua_fullcolor.jpg"
+    },
+    {
+      "name": "Hikvision DS-2CD2043G0-I Bullet Camera",
+      "brand": "Hikvision",
+      "specification": "4MP / IR 30m / H.265+ / IP67",
+      "warranty": "2 Years",
+      "price": "PKR 14,500",
+      "features": ["High Resolution", "ONVIF", "Smart Motion Detection", "Weatherproof"],
+      "image": "../../images/hikvision_bullet.jpg"
+    },
+    {
+      "name": "Dahua IPC-HDW1230T1-S5 IP Dome",
+      "brand": "Dahua",
+      "specification": "2MP / 2.8mm Lens / 30m IR",
+      "warranty": "2 Years",
+      "price": "PKR 9,000",
+      "features": ["Wide View", "PoE", "Smart IR", "Compact Design"],
+      "image": "../../images/dahua_dome2.jpg"
+    },
+    {
+      "name": "CP Plus CP-UNC-TA21PL3 Dome Camera",
+      "brand": "CP Plus",
+      "specification": "2.4MP / 1080p / IR 30m",
+      "warranty": "2 Years",
+      "price": "PKR 7,500",
+      "features": ["Infrared Night Vision", "HD Resolution", "Wide Dynamic Range", "Durable"],
+      "image": "../../images/cpplus_dome2.jpg"
+    }
+  ]
+
+}

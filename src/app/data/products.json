@@ -1,0 +1,169 @@
+{
+  "panels": [
+    {
+      "name": "Jinko Solar-Tiger Neo 580W",
+      "brand": "Jinko Solar",
+      "power": "580W",
+      "efficiency": "22.3%",
+      "warranty": "25 Years",
+      "price": "PKR 28,500",
+      "features": ["Monocrystalline", "Tier-1 Brand", "High Efficiency", "Anti-reflective coating"],
+      "image": "../../images/logo.jpeg"
+    },
+    {
+      "name": "Canadian Solar HiKu7 575W",
+      "brand": "Canadian Solar",
+      "power": "575W",
+      "efficiency": "22.1%",
+      "warranty": "25 Years",
+      "price": "PKR 27,800",
+      "features": ["Monocrystalline", "Tier-1 Brand", "Weather Resistant", "Low-light performance"],
+      "image": "../../images/logo.jpeg"
+    },
+    {
+      "name": "LONGi Hi-MO X6 570W",
+      "brand": "LONGi",
+      "power": "570W",
+      "efficiency": "22.8%",
+      "warranty": "25 Years",
+      "price": "PKR 29,200",
+      "features": ["Monocrystalline", "Premium Quality", "High Efficiency", "Bifacial Technology"],
+      "image": "../../images/logo.jpeg"
+    }
+  ],
+  "inverters": [
+    {
+      "name": "Growatt MIN 15000TL-X",
+      "brand": "Growatt",
+      "power": "15kW",
+      "efficiency": "98.4%",
+      "warranty": "10 Years",
+      "price": "PKR 185,000",
+      "features": ["String Inverter", "Wi-Fi Monitoring", "IP65 Protection", "Dual MPPT"],
+      "image": "../../images/logo.jpeg"
+    },
+    {
+      "name": "Sungrow SG20RT",
+      "brand": "Sungrow",
+      "power": "20kW",
+      "efficiency": "98.5%",
+      "warranty": "10 Years",
+      "price": "PKR 225,000",
+      "features": ["Three-phase", "Smart O&M", "Grid Support", "Reactive Power"],
+      "image": "../../images/logo.jpeg"
+    },
+    {
+      "name": "Huawei SUN2000-12KTL-M2",
+      "brand": "Huawei",
+      "power": "12kW",
+      "efficiency": "98.6%",
+      "warranty": "10 Years",
+      "price": "PKR 165,000",
+      "features": ["Smart String", "AI-powered", "Safety Protection", "Easy Installation"],
+      "image": "../../images/logo.jpeg"
+    }
+  ],
+  "batteries": [
+    {
+      "name": "Pylontech US3000C",
+      "brand": "Pylontech",
+      "capacity": "3.55kWh",
+      "type": "Lithium",
+      "warranty": "10 Years",
+      "price": "PKR 125,000",
+      "features": ["LiFePO4", "Modular Design", "BMS Built-in", "6000 Cycles"],
+      "image": "../../images/logo.jpeg"
+    },
+    {
+      "name": "AGM Deep Cycle 200Ah",
+      "brand": "Phoenix",
+      "capacity": "200Ah",
+      "type": "AGM",
+      "warranty": "5 Years",
+      "price": "PKR 45,000",
+      "features": ["Maintenance Free", "Deep Cycle", "Leak Proof", "Long Life"],
+      "image": "../../images/logo.jpeg"
+    },
+    {
+      "name": "Tubular Battery 200Ah",
+      "brand": "Osaka",
+      "capacity": "200Ah",
+      "type": "Tubular",
+      "warranty": "3 Years",
+      "price": "PKR 35,000",
+      "features": ["High Capacity", "Robust Design", "Value for Money", "Proven Technology"],
+      "image": "../../images/logo.jpeg"
+    }
+  ],
+  "mounting": [
+    {
+      "name": "Roof Rail Mounting Kit",
+      "brand": "Schletter",
+      "compatibility": "Tile/Metal Roof",
+      "material": "Aluminum",
+      "warranty": "25 Years",
+      "price": "PKR 8,500",
+      "features": ["Corrosion Resistant", "Easy Installation", "Wind Load Tested", "Complete Kit"],
+      "image": "../../images/logo.jpeg"
+    },
+    {
+      "name": "Ground Mount Structure",
+      "brand": "Custom",
+      "compatibility": "Ground Installation",
+      "material": "Galvanized Steel",
+      "warranty": "15 Years",
+      "price": "PKR 12,000",
+      "features": ["Hot Dip Galvanized", "Adjustable Tilt", "Foundation Included", "Weather Resistant"],
+      "image": "../../images/logo.jpeg"
+    }
+  ],
+  "accessories": [
+    {
+      "name": "DC Solar Cable 4mm²",
+      "brand": "Lapp",
+      "specification": "4mm² TUV",
+      "length": "100m Roll",
+      "warranty": "25 Years",
+      "price": "PKR 15,000",
+      "features": ["UV Resistant", "TUV Certified", "Halogen Free", "Temperature Rated"],
+      "image": "../../images/logo.jpeg"
+    },
+    {
+      "name": "MC4 Connectors Pair",
+      "brand": "Multi-Contact",
+      "rating": "30A/1000V",
+      "material": "PPO Plastic",
+      "warranty": "25 Years",
+      "price": "PKR 350",
+      "features": ["Original MC4", "IP67 Rating", "Easy Installation", "Reliable Connection"],
+      "image": "../../images/logo.jpeg"
+    },{
+      "name": "MC4 Connectors Pair",
+      "brand": "Multi-Contact",
+      "rating": "30A/1000V",
+      "material": "PPO Plastic",
+      "warranty": "25 Years",
+      "price": "PKR 350",
+      "features": ["Original MC4", "IP67 Rating", "Easy Installation", "Reliable Connection"],
+      "image": "../../images/logo.jpeg"
+    },{
+      "name": "MC4 Connectors Pair",
+      "brand": "Multi-Contact",
+      "rating": "30A/1000V",
+      "material": "PPO Plastic",
+      "warranty": "25 Years",
+      "price": "PKR 350",
+      "features": ["Original MC4", "IP67 Rating", "Easy Installation", "Reliable Connection"],
+      "image": "../../images/logo.jpeg"
+    },{
+      "name": "MC4 Connectors Pair",
+      "brand": "Multi-Contact",
+      "rating": "30A/1000V",
+      "material": "PPO Plastic",
+      "warranty": "25 Years",
+      "price": "PKR 350",
+      "features": ["Original MC4", "IP67 Rating", "Easy Installation", "Reliable Connection"],
+      "image": "../../images/logo.jpeg"
+    }
+  ]
+}
