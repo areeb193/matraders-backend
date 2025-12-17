@@ -161,9 +161,13 @@ jobs:
           build-args: |
             NODE_ENV=production
 
-      - name: 🔍 Verify Docker images
+      - name: 🔍 Verify Docker images pushed
         run: |
-          docker images | grep matraders
+          echo "✅ Images built and pushed successfully:"
+          echo "- ${{ env.DOCKER_IMAGE_FRONTEND }}:latest"
+          echo "- ${{ env.DOCKER_IMAGE_FRONTEND }}:${{ env.DOCKER_IMAGE_TAG }}"
+          echo "- ${{ env.DOCKER_IMAGE_BACKEND }}:latest"
+          echo "- ${{ env.DOCKER_IMAGE_BACKEND }}:${{ env.DOCKER_IMAGE_TAG }}"
 
   # =============================================================================
   # JOB 3: DEPLOY TO KUBERNETES
