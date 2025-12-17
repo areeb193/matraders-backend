@@ -6,10 +6,10 @@ import { existsSync } from 'fs';
 // DELETE - Remove a specific uploaded file
 export async function DELETE(
   _req: Request,
-  { params }: { params: { filename: string } }
+  { params }: { params: Promise<{ filename: string }> }
 ) {
   try {
-    const { filename } = params;
+    const { filename } = await params;
     
     // Prevent directory traversal attacks
     if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
@@ -35,10 +35,10 @@ export async function DELETE(
 // GET - Get file info
 export async function GET(
   _req: Request,
-  { params }: { params: { filename: string } }
+  { params }: { params: Promise<{ filename: string }> }
 ) {
   try {
-    const { filename } = params;
+    const { filename } = await params;
     
     if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
       return NextResponse.json({ error: 'Invalid filename' }, { status: 400 });

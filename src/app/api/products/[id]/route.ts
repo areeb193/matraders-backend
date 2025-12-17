@@ -6,8 +6,8 @@ import { unlink } from 'fs/promises';
 import path from 'path';
 import { existsSync } from 'fs';
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   if (!mongoose.isValidObjectId(id)) return NextResponse.json({ error: 'Invalid ID' }, { status: 404 });
   await connectToDatabase();
   const product = await Product.findById(id).populate('category');
@@ -15,8 +15,8 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   return NextResponse.json(product);
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   if (!mongoose.isValidObjectId(id)) return NextResponse.json({ error: 'Invalid ID' }, { status: 404 });
   await connectToDatabase();
   try {
@@ -32,8 +32,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 // DELETE - Delete product with optional image cleanup
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   if (!mongoose.isValidObjectId(id)) return NextResponse.json({ error: 'Invalid ID' }, { status: 404 });
   
   await connectToDatabase();

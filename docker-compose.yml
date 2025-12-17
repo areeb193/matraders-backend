@@ -1,0 +1,155 @@
+# ==============================================================================
+# DOCKER COMPOSE CONFIGURATION FOR MA TRADERS SYSTEM
+# ==============================================================================
+# This configuration demonstrates logical separation of:
+# 1. Frontend Service (Next.js UI Components)
+# 2. Backend Service (Next.js API Routes)
+# 3. Database Service (MongoDB)
+# 
+# Note: In Next.js, frontend and backend run in the same process, but are
+# configured here as separate services for academic demonstration purposes.
+# ==============================================================================
+
+services:
+  # =============================================================================
+  # SERVICE 1: MONGODB DATABASE
+  # =============================================================================
+  # Official MongoDB image for data persistence
+  mongodb:
+    image: mongo:7.0
+    container_name: matraders-mongodb
+    restart: unless-stopped
+    
+    # Environment variables for MongoDB initialization
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secretpassword123
+      MONGO_INITDB_DATABASE: matraders
+    
+    # Port mapping: host:container
+    ports:
+      - "27017:27017"
+    
+    # Volume for data persistence
+    # Data persists even when container is removed
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    
+    # Connect to custom network
+    networks:
+      - matraders-network
+    
+    # Health check to ensure MongoDB is ready
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  # =============================================================================
+  # SERVICE 2: BACKEND API (Next.js API Routes)
+  # =============================================================================
+  # This service handles all API endpoints (/api/*)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: matraders-backend
+    restart: unless-stopped
+    
+    # Environment variables for backend
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # MongoDB connection string
+      - MONGO_URI=mongodb://admin:secretpassword123@mongodb:27017/matraders?authSource=admin
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+    
+    # Port mapping for backend API
+    ports:
+      - "3001:3000"
+    
+    # Depends on MongoDB being healthy
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    
+    networks:
+      - matraders-network
+    
+    # Volume for uploads persistence
+    volumes:
+      - uploads_data:/app/public/uploads
+      - brands_data:/app/public/brands
+
+  # =============================================================================
+  # SERVICE 3: FRONTEND UI (Next.js Pages & Components)
+  # =============================================================================
+  # This service serves the UI and client-side React components
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: matraders-frontend
+    restart: unless-stopped
+    
+    # Environment variables for frontend
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # Connect to backend service
+      - MONGO_URI=mongodb://admin:secretpassword123@mongodb:27017/matraders?authSource=admin
+      - NEXT_PUBLIC_API_URL=http://backend:3000
+    
+    # Expose frontend on port 3000 (as required)
+    ports:
+      - "3000:3000"
+    
+    # Depends on backend and database
+    depends_on:
+      - backend
+      - mongodb
+    
+    networks:
+      - matraders-network
+    
+    # Shared volumes for consistency
+    volumes:
+      - uploads_data:/app/public/uploads
+      - brands_data:/app/public/brands
+
+# =============================================================================
+# NETWORKS CONFIGURATION
+# =============================================================================
+# Custom bridge network for service communication
+networks:
+  matraders-network:
+    driver: bridge
+    name: matraders-network
+
+# =============================================================================
+# VOLUMES CONFIGURATION
+# =============================================================================
+# Named volumes for data persistence
+volumes:
+  # MongoDB data volume - persists database data
+  mongodb_data:
+    driver: local
+    name: matraders-mongodb-data
+  
+  # MongoDB config volume - persists configuration
+  mongodb_config:
+    driver: local
+    name: matraders-mongodb-config
+  
+  # Uploads volume - persists user uploaded files
+  uploads_data:
+    driver: local
+    name: matraders-uploads
+  
+  # Brands volume - persists brand images
+  brands_data:
+    driver: local
+    name: matraders-brands

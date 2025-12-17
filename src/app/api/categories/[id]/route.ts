@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import { connectToDatabase } from '@/lib/mongoose';
 import Category from '@/models/Category';
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   if (!mongoose.isValidObjectId(id)) return NextResponse.json({ error: 'Invalid ID' }, { status: 404 });
   await connectToDatabase();
   const category = await Category.findById(id);
@@ -12,8 +12,8 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   return NextResponse.json(category);
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   if (!mongoose.isValidObjectId(id)) return NextResponse.json({ error: 'Invalid ID' }, { status: 404 });
   await connectToDatabase();
   try {
@@ -27,8 +27,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   if (!mongoose.isValidObjectId(id)) return NextResponse.json({ error: 'Invalid ID' }, { status: 404 });
   await connectToDatabase();
   const deleted = await Category.findByIdAndDelete(id);

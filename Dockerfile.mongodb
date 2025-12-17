@@ -1,0 +1,51 @@
+# ==============================================================================
+# DOCKERFILE FOR MONGODB (Optional Custom Build)
+# ==============================================================================
+# This file is provided for educational purposes to demonstrate how to create
+# a custom MongoDB Dockerfile. In production, it's recommended to use the
+# official mongo:7.0 image as configured in docker-compose.yml
+# ==============================================================================
+
+FROM mongo:7.0
+
+# Metadata
+LABEL maintainer="MA Traders DevOps Team"
+LABEL description="Custom MongoDB image for MA Traders System"
+LABEL version="7.0"
+
+# Set environment variables
+ENV MONGO_INITDB_ROOT_USERNAME=admin
+ENV MONGO_INITDB_ROOT_PASSWORD=secretpassword123
+ENV MONGO_INITDB_DATABASE=matraders
+
+# Create directory for initialization scripts
+RUN mkdir -p /docker-entrypoint-initdb.d
+
+# Copy custom MongoDB initialization script (optional)
+# COPY ./mongo-init.js /docker-entrypoint-initdb.d/
+
+# Expose MongoDB port
+EXPOSE 27017
+
+# Health check
+HEALTHCHECK --interval=10s --timeout=5s --retries=5 --start-period=40s \
+  CMD echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+
+# Use the default MongoDB entrypoint
+CMD ["mongod"]
+
+# ==============================================================================
+# USAGE NOTES:
+# ==============================================================================
+# 1. This custom Dockerfile is NOT required for the project
+# 2. The docker-compose.yml uses the official mongo:7.0 image
+# 3. Use this only if you need custom MongoDB configuration
+# 
+# To build this image:
+#   docker build -f Dockerfile.mongodb -t matraders-mongodb:custom .
+#
+# To use in docker-compose.yml, replace:
+#   image: mongo:7.0
+# with:
+#   image: matraders-mongodb:custom
+# ==============================================================================

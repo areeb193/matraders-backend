@@ -1,0 +1,21 @@
+# ==============================================================================
+# KUBERNETES CONFIGMAP - ENVIRONMENT VARIABLES
+# ==============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matraders-config
+  namespace: matraders
+data:
+  # Node environment
+  NODE_ENV: "production"
+  
+  # MongoDB connection (using Kubernetes service name)
+  MONGO_URI: "mongodb://admin:secretpassword123@mongodb:27017/matraders?authSource=admin"
+  
+  # Next.js configuration
+  NEXT_TELEMETRY_DISABLED: "1"
+  NEXT_PUBLIC_API_URL: "http://matraders-backend:3000"
+  
+  # Application port
+  PORT: "3000"

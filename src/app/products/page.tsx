@@ -29,7 +29,6 @@ import {
   Cctv,
 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import InverterBattery from "@/services/inverter-battery-setup/page";
 import { FaCamera, FaCarBattery, FaSolarPanel } from "react-icons/fa";
 import {
   Pagination,
