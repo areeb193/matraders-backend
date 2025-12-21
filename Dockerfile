@@ -28,10 +28,12 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Set environment variables for build time
-ENV NEXT_TELEMETRY_DISABLED 1
-# Set dummy MONGO_URI for build (will be overridden at runtime)
-ENV MONGO_URI mongodb://localhost:27017/matraders
-ENV NEXT_PUBLIC_MONGO_URI mongodb://localhost:27017/matraders
+ENV NEXT_TELEMETRY_DISABLED=1
+# Set dummy values for build (will be overridden at runtime)
+ENV MONGO_URI=mongodb://localhost:27017/matraders
+ENV NEXT_PUBLIC_MONGO_URI=mongodb://localhost:27017/matraders
+ENV JWT_SECRET=build-time-placeholder-secret-change-at-runtime
+ENV NEXT_PHASE=phase-production-build
 
 # Install all dependencies (including devDependencies for build)
 RUN npm install
@@ -46,8 +48,8 @@ FROM node:18-alpine AS runner
 WORKDIR /app
 
 # Set production environment
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Create a non-root user for security
 RUN addgroup --system --gid 1001 nodejs
@@ -71,8 +73,8 @@ USER nextjs
 EXPOSE 3000
 
 # Set environment variables that can be overridden
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 # Start the Next.js application
 # This serves both frontend pages and API routes

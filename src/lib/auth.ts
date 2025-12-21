@@ -1,16 +1,24 @@
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-// Validate required environment variables
-if (!process.env.JWT_SECRET) {
-  throw new Error('JWT_SECRET environment variable is not set. Please add it to .env.local');
+// Helper function to get JWT secret with validation
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  
+  // Only validate at runtime, not during build
+  if (typeof window === 'undefined' && process.env.NEXT_PHASE !== 'phase-production-build') {
+    if (!secret) {
+      throw new Error('JWT_SECRET environment variable is not set. Please add it to .env.local');
+    }
+    
+    if (process.env.NODE_ENV === 'production' && secret === 'ma-traders-super-secret-jwt-key-2024') {
+      console.warn('WARNING: Using default JWT_SECRET in production. Please change it!');
+    }
+  }
+  
+  return secret || 'build-time-placeholder';
 }
 
-if (process.env.NODE_ENV === 'production' && process.env.JWT_SECRET === 'ma-traders-super-secret-jwt-key-2024') {
-  console.warn('WARNING: Using default JWT_SECRET in production. Please change it!');
-}
-
-const JWT_SECRET = process.env.JWT_SECRET;
 const COOKIE_MAX_AGE = 600; // 10 minutes in seconds
 
 export interface JWTPayload {
@@ -24,7 +32,7 @@ export interface JWTPayload {
  * Sign a JWT token with user payload
  */
 export function signToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET as jwt.Secret, {
+  return jwt.sign(payload, getJwtSecret() as jwt.Secret, {
     expiresIn: '10m',
   });
 }
@@ -34,7 +42,7 @@ export function signToken(payload: JWTPayload): string {
  */
 export function verifyToken(token: string): JWTPayload | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET as jwt.Secret) as JWTPayload;
+    const decoded = jwt.verify(token, getJwtSecret() as jwt.Secret) as JWTPayload;
     return decoded;
   } catch (error) {
     // Don't log details in production to avoid exposing sensitive info
