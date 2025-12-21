@@ -42,7 +42,7 @@ export default function SearchPage() {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!query && searchType === 'all') {
+    if (!searchQuery) {
       setError('Please enter a search query');
       return;
     }
@@ -52,9 +52,7 @@ export default function SearchPage() {
 
     try {
       const params = new URLSearchParams();
-      if (query) params.set('q', query);
-      params.set('type', searchType);
-      if (minPrice) params.set('minPrice', minPrice);
+      if (searchQuery) params.set('q', searchQuery);
       if (maxPrice) params.set('maxPrice', maxPrice);
 
       const res = await fetch(`/api/search?${params.toString()}`);
