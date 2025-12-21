@@ -35,6 +35,7 @@ export default function SearchPage() {
   const [hasSearched, setHasSearched] = useState(false);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -55,6 +56,7 @@ export default function SearchPage() {
     try {
       const params = new URLSearchParams();
       if (searchQuery) params.set('q', searchQuery);
+      if (minPrice) params.set('minPrice', minPrice);
       if (maxPrice) params.set('maxPrice', maxPrice);
 
       const res = await fetch(`/api/search?${params.toString()}`);
