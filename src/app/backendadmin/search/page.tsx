@@ -14,6 +14,7 @@ import {
   Package,
   X,
   ArrowRight,
+  ArrowLeft,
 } from "lucide-react";
 
 interface SearchProduct {
