@@ -200,7 +200,7 @@ const placeOrder = async (sendWhatsApp = false) => {
       items: cartItems.map(item => ({
         product: String(item.id), // Ensure it's a string (MongoDB ObjectId)
         quantity: item.quantity,
-        priceAtTimeOfOrder: item.price // API expects priceAtTimeOfOrder, not price
+        price: item.price // Changed from priceAtTimeOfOrder to price
       })),
       totalAmount: total,
       status: 'pending' as const,

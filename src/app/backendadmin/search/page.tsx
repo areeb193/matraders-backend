@@ -191,7 +191,7 @@ export default function SearchPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {results.categories.map((cat) => (
+                  {results.categories.map((cat: any) => (
                     <Link
                       key={cat._id}
                       href={`/backendadmin/categories/${cat._id}`}
@@ -217,7 +217,7 @@ export default function SearchPage() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {results.products.map((prod) => (
+                  {results.products.map((prod: any) => (
                     <Link
                       key={prod._id}
                       href={`/backendadmin/products/${prod._id}`}
@@ -253,7 +253,7 @@ export default function SearchPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {results.orders.map((order) => (
+                  {results.orders.map((order: any) => (
                     <Link
                       key={order._id}
                       href={`/backendadmin/orders/${order._id}`}
@@ -289,7 +289,7 @@ export default function SearchPage() {
             <Card>
               <CardContent className="py-12 text-center text-gray-500">
                 <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No results found for &quot;{query}&quot;</p>
+                <p>No results found for &quot;{searchQuery}&quot;</p>
               </CardContent>
             </Card>
           )}
