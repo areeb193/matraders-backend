@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppWidget from "@/components/ui/WhatsAppButton";
 import { CartProvider } from "@/contexts/CartContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 
 function ConditionalLayout({ children }: { children: React.ReactNode }) {
@@ -38,9 +39,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <CartProvider>
-          <ConditionalLayout>{children}</ConditionalLayout>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <ConditionalLayout>{children}</ConditionalLayout>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

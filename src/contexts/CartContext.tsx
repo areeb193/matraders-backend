@@ -1,9 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export interface CartItem {
-  id: number;
+  id: string | number; // Support both MongoDB _id (string) and legacy numeric IDs
   name: string;
   brand: string;
   price: number;
@@ -15,8 +15,8 @@ export interface CartItem {
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (product: Omit<CartItem, "quantity">) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeFromCart: (id: string | number) => void;
+  updateQuantity: (id: string | number, quantity: number) => void;
   clearCart: () => void;
   getCartTotal: () => number;
   getCartCount: () => number;
@@ -37,35 +37,33 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 1,
-      name: "Monocrystalline Solar Panel 320W",
-      brand: "Jinko Solar",
-      price: 25000,
-      quantity: 2,
-      image: "/placeholder.svg",
-      inStock: true,
-    },
-    {
-      id: 2,
-      name: "5kW Solar Inverter",
-      brand: "Growatt",
-      price: 85000,
-      quantity: 1,
-      image: "/placeholder.svg",
-      inStock: true,
-    },
-    {
-      id: 3,
-      name: "Solar Battery 100Ah",
-      brand: "AGS",
-      price: 45000,
-      quantity: 2,
-      image: "/placeholder.svg",
-      inStock: false,
-    },
-  ]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem('matraders_cart');
+      if (savedCart) {
+        setCartItems(JSON.parse(savedCart));
+      }
+    } catch (error) {
+      console.error('Failed to load cart from localStorage:', error);
+    } finally {
+      setIsLoaded(true);
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    if (isLoaded) {
+      try {
+        localStorage.setItem('matraders_cart', JSON.stringify(cartItems));
+      } catch (error) {
+        console.error('Failed to save cart to localStorage:', error);
+      }
+    }
+  }, [cartItems, isLoaded]);
 
   const addToCart = (product: Omit<CartItem, "quantity">) => {
     setCartItems((prev) => {
@@ -81,11 +79,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     });
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: string | number) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const updateQuantity = (id: number, quantity: number) => {
+  const updateQuantity = (id: string | number, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(id);
       return;

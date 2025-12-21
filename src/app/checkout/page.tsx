@@ -19,10 +19,13 @@ import {
   ArrowLeft,
   Truck,
   Shield,
-  Clock
+  Clock,
+  Loader2
 } from 'lucide-react';
 import { FaMobile, FaWhatsapp } from 'react-icons/fa';
 import { useCart, CartItem } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { orderAPI } from '@/lib/api';
 
 type OrderItem = { name: string; quantity: number; price: number };
 
@@ -30,6 +33,7 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [installationService, setInstallationService] = useState(false);
   const { cartItems, getCartTotal, clearCart } = useCart();
+  const { user } = useAuth();
 
   // derive order from cart context
   const orderItems: OrderItem[] = cartItems.map((c: CartItem) => ({ name: c.name, quantity: c.quantity, price: c.price }));
@@ -123,6 +127,16 @@ const [address, setAddress] = useState('');
 const [city, setCity] = useState('');
 const [state, setState] = useState('');
 
+// Pre-fill user info if logged in
+useEffect(() => {
+  if (user) {
+    const nameParts = user.name.split(' ');
+    setFirstName(nameParts[0] || '');
+    setLastName(nameParts.slice(1).join(' ') || '');
+    setEmail(user.email || '');
+  }
+}, [user]);
+
 // bank transfer modal/upload state
 const [showBankDetails, setShowBankDetails] = useState(false);
 const [uploadedDataUrl, setUploadedDataUrl] = useState<string | null>(null);
@@ -158,47 +172,61 @@ const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
   reader.readAsDataURL(file);
 };
 
-// place order: save to localStorage for admin panel to read
-const placeOrder = (sendWhatsApp = false) => {
+// State for order submission
+const [submitting, setSubmitting] = useState(false);
+
+// place order: save to MongoDB via API
+const placeOrder = async (sendWhatsApp = false) => {
   // basic validation
   if (!firstName || !lastName || !phone || !address || !city || !state) {
     alert('Please fill contact and address fields before placing order.');
     return;
   }
 
-  const order = {
-    id: `order_${Date.now()}`,
-    createdAt: new Date().toISOString(),
-    customer: { firstName, lastName, email, phone, address, city, state },
-    items: cartItems,
-    subtotal,
-    installationService,
-    installationFee,
-    delivery,
-    total,
-    paymentMethod,
-    bankPaid: paymentMethod === 'bank' ? bankPaidChecked : false,
-    screenshot: uploadedDataUrl || null,
-    status: paymentMethod === 'bank' && bankPaidChecked ? 'paid' : 'pending',
-  };
+  if (cartItems.length === 0) {
+    alert('Your cart is empty!');
+    return;
+  }
+
+  setSubmitting(true);
 
   try {
-    const raw = localStorage.getItem('orders');
-    const existing = raw ? JSON.parse(raw) : [];
-    existing.unshift(order);
-    localStorage.setItem('orders', JSON.stringify(existing));
+    // Create order in MongoDB
+    const orderData = {
+      customerName: `${firstName} ${lastName}`,
+      customerEmail: email,
+      customerPhone: phone,
+      shippingAddress: `${address}, ${city}, ${state}`,
+      items: cartItems.map(item => ({
+        product: String(item.id), // Ensure it's a string (MongoDB ObjectId)
+        quantity: item.quantity,
+        priceAtTimeOfOrder: item.price // API expects priceAtTimeOfOrder, not price
+      })),
+      totalAmount: total,
+      status: 'pending' as const,
+    };
+
+    const savedOrder = await orderAPI.create(orderData);
+    
     // optionally notify admin via whatsapp with order summary
     if (sendWhatsApp) {
-      sendOrderToWhatsApp('Order placed on website.');
-      if (uploadedDataUrl) sendImageToWhatsApp(uploadedDataUrl, 'Attached screenshot for order');
+      sendOrderToWhatsApp(`Order #${savedOrder._id} placed on website.`);
+      if (uploadedDataUrl) sendImageToWhatsApp(uploadedDataUrl, `Screenshot for order #${savedOrder._id}`);
     }
+    
     // clear cart
     clearCart();
-    // minimal feedback
-    alert('Order placed successfully. Admin will review and contact you.');
+    
+    // Success message
+    alert(`Order placed successfully! Order ID: ${savedOrder._id}\n\nAdmin will review and contact you soon.`);
+    
+    // Redirect to home or orders page
+    window.location.href = '/';
   } catch (err) {
-    console.error(err);
-    alert('Failed to save order. Please try again.');
+    console.error('Order creation failed:', err);
+    alert(`Failed to place order: ${err instanceof Error ? err.message : 'Unknown error'}\n\nPlease try again.`);
+  } finally {
+    setSubmitting(false);
   }
 };
 
@@ -396,16 +424,28 @@ const placeOrder = (sendWhatsApp = false) => {
                 <Button 
   className="w-full bg-gradient-energy text-primary-foreground shadow-energy mb-2"
   onClick={() => sendOrderToWhatsApp()}
+  disabled={submitting}
 >
+  <FaWhatsapp className="mr-2 h-4 w-4" />
   Send Order to WhatsApp
-    <FaWhatsapp className="mr-2 h-4 w-4" />
-
 </Button>
 
-<Button className="w-full bg-gradient-energy text-primary-foreground shadow-energy" onClick={() => placeOrder(false)}>
-  Place Order On Website
-    <CheckCircle className="mr-2 h-4 w-4" />
-
+<Button 
+  className="w-full bg-gradient-energy text-primary-foreground shadow-energy" 
+  onClick={() => placeOrder(false)}
+  disabled={submitting}
+>
+  {submitting ? (
+    <>
+      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      Placing Order...
+    </>
+  ) : (
+    <>
+      <CheckCircle className="mr-2 h-4 w-4" />
+      Place Order On Website
+    </>
+  )}
 </Button>
 
 

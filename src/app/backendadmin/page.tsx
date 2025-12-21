@@ -13,42 +13,44 @@ import {
   XCircle,
   RefreshCw,
   Image,
-  Search
+  Search,
+  TrendingUp,
+  DollarSign,
+  AlertTriangle
 } from 'lucide-react';
 import Link from 'next/link';
+import { statsAPI } from '@/lib/api';
 
 export default function BackendAdminDashboard() {
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
   const [counts, setCounts] = useState({ categories: 0, products: 0, orders: 0, files: 0 });
+  const [stats, setStats] = useState({
+    totalRevenue: 0,
+    pendingOrders: 0,
+    lowStockProducts: 0,
+  });
 
   const checkConnection = async () => {
     setDbStatus('checking');
     try {
-      const [catRes, prodRes, ordRes, filesRes] = await Promise.all([
-        fetch('/api/categories'),
-        fetch('/api/products'),
-        fetch('/api/orders'),
-        fetch('/api/upload'),
-      ]);
+      const dashboardData = await statsAPI.getDashboardStats();
       
-      if (catRes.ok && prodRes.ok && ordRes.ok) {
-        const [cats, prods, ords, filesData] = await Promise.all([
-          catRes.json(),
-          prodRes.json(),
-          ordRes.json(),
-          filesRes.ok ? filesRes.json() : { files: [] },
-        ]);
-        setCounts({
-          categories: Array.isArray(cats) ? cats.length : 0,
-          products: Array.isArray(prods) ? prods.length : 0,
-          orders: Array.isArray(ords) ? ords.length : 0,
-          files: filesData.files?.length || 0,
-        });
-        setDbStatus('connected');
-      } else {
-        setDbStatus('error');
-      }
-    } catch {
+      setCounts({
+        categories: dashboardData.totalCategories,
+        products: dashboardData.totalProducts,
+        orders: dashboardData.totalOrders,
+        files: 0, // Files endpoint not yet implemented
+      });
+
+      setStats({
+        totalRevenue: dashboardData.totalRevenue,
+        pendingOrders: dashboardData.pendingOrders,
+        lowStockProducts: dashboardData.lowStockProducts,
+      });
+
+      setDbStatus('connected');
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error);
       setDbStatus('error');
     }
   };
@@ -165,6 +167,42 @@ export default function BackendAdminDashboard() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-green-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">PKR {stats.totalRevenue.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">From {counts.orders} orders</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Pending Orders</CardTitle>
+            <TrendingUp className="h-4 w-4 text-orange-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.pendingOrders}</div>
+            <p className="text-xs text-muted-foreground">Need attention</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Low Stock Alert</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-red-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.lowStockProducts}</div>
+            <p className="text-xs text-muted-foreground">Products below 10 units</p>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Management Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">

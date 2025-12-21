@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { statsAPI } from '@/lib/api';
 import { 
   BarChart, 
   Bar, 
@@ -25,28 +26,105 @@ import {
   TrendingUp, 
   Plus,
   Eye,
-  Calendar
+  Calendar,
+  Loader2,
+  DollarSign,
+  Package,
+  ShoppingCart,
+  AlertTriangle,
+  CheckCircle,
+  XCircle
 } from 'lucide-react';
+import Link from 'next/link';
 
 const Dashboard = () => {
-  const [showPayloadIframe, setShowPayloadIframe] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [dashboardData, setDashboardData] = useState({
+    totalProducts: 0,
+    totalOrders: 0,
+    totalCategories: 0,
+    totalRevenue: 0,
+    pendingOrders: 0,
+    lowStockProducts: 0,
+    products: [],
+    orders: [],
+    categories: [],
+  });
 
-  const openPayloadAdmin = () => {
-    if (typeof window !== 'undefined') {
-      window.open('http://localhost:4000/admin', '_blank', 'noopener,noreferrer');
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const data = await statsAPI.getDashboardStats();
+        setDashboardData(data);
+      } catch (err) {
+        console.error('Failed to fetch dashboard data:', err);
+        setError('Failed to load dashboard data');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const togglePayloadIframe = () => {
-    setShowPayloadIframe((p) => !p);
-  };
+    fetchData();
+  }, []);
 
-  // Mock data
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="p-6">
+          <div className="text-center">
+            <XCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+            <p className="text-lg font-semibold mb-2">{error}</p>
+            <Button onClick={() => window.location.reload()}>Retry</Button>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // Real-time stats from database
   const stats = [
-    { title: 'Total Projects', value: '156', change: '+12%', icon: Briefcase, color: 'text-blue-600' },
-    { title: 'Active Products', value: '89', change: '+5%', icon: ShoppingBag, color: 'text-green-600' },
-    { title: 'Team Members', value: '24', change: '+2', icon: Users, color: 'text-purple-600' },
-    { title: 'New Leads', value: '47', change: '+18%', icon: MessageSquare, color: 'text-orange-600' },
+    { 
+      title: 'Total Revenue', 
+      value: `PKR ${dashboardData.totalRevenue.toLocaleString()}`, 
+      change: '+12%', 
+      icon: DollarSign, 
+      color: 'text-green-600',
+      href: '/admin/products'
+    },
+    { 
+      title: 'Total Products', 
+      value: dashboardData.totalProducts.toString(), 
+      change: '+5%', 
+      icon: Package, 
+      color: 'text-blue-600',
+      href: '/admin/products'
+    },
+    { 
+      title: 'Total Orders', 
+      value: dashboardData.totalOrders.toString(), 
+      change: `${dashboardData.pendingOrders} pending`, 
+      icon: ShoppingCart, 
+      color: 'text-orange-600',
+      href: '/backendadmin/orders'
+    },
+    { 
+      title: 'Low Stock Alert', 
+      value: dashboardData.lowStockProducts.toString(), 
+      change: 'Need restock', 
+      icon: AlertTriangle, 
+      color: 'text-red-600',
+      href: '/admin/products'
+    },
   ];
 
   const visitData = [
@@ -73,33 +151,49 @@ const Dashboard = () => {
   ];
 
   const quickActions = [
-    { title: 'Add New Service', href: '/admin/services/new', icon: Plus },
-    { title: 'Add New Product', href: '/admin/products/new', icon: Plus },
-    { title: 'Add Team Member', href: '/admin/team/new', icon: Plus },
-    { title: 'Add Project', href: '/admin/projects/new', icon: Plus },
+    { title: 'Manage Products', href: '/backendadmin/products', icon: Package },
+    { title: 'Manage Orders', href: '/backendadmin/orders', icon: ShoppingCart },
+    { title: 'Manage Categories', href: '/backendadmin/categories', icon: Briefcase },
+    { title: 'View All Stats', href: '/backendadmin', icon: TrendingUp },
   ];
 
   return (
     <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-muted-foreground">Welcome back! Here's what's happening with your store.</p>
+        </div>
+        <Link href="/backendadmin">
+          <Button>
+            <Eye className="h-4 w-4 mr-2" />
+            Full Backend Admin
+          </Button>
+        </Link>
+      </div>
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {stats.map((stat, index) => (
-          <Card key={index} className="hover-lift">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
-                  <p className="text-2xl font-bold">{stat.value}</p>
-                  <p className={`text-sm ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-                    {stat.change} from last month
-                  </p>
+          <Link key={index} href={stat.href}>
+            <Card className="hover:shadow-xl transition-all cursor-pointer">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
+                    <p className="text-2xl font-bold">{stat.value}</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {stat.change}
+                    </p>
+                  </div>
+                  <div className={`p-3 rounded-full bg-muted ${stat.color}`}>
+                    <stat.icon className="h-6 w-6" />
+                  </div>
                 </div>
-                <div className={`p-3 rounded-full bg-muted ${stat.color}`}>
-                  <stat.icon className="h-6 w-6" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
 
@@ -159,71 +253,72 @@ const Dashboard = () => {
         <Card>
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Frequently used actions</CardDescription>
+            <CardDescription>Manage your e-commerce store</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {quickActions.map((action, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  className="h-16 sm:h-20 flex flex-col items-center justify-center space-y-2 hover-scale"
-                >
-                  <action.icon className="h-6 w-6" />
-                  <span className="text-sm text-center">{action.title}</span>
-                </Button>
+                <Link key={index} href={action.href}>
+                  <Button
+                    variant="outline"
+                    className="h-16 sm:h-20 w-full flex flex-col items-center justify-center space-y-2 hover:shadow-lg transition-all"
+                  >
+                    <action.icon className="h-6 w-6" />
+                    <span className="text-sm text-center">{action.title}</span>
+                  </Button>
+                </Link>
               ))}
-
-              {/* Payload admin buttons: open in new tab or preview inline */}
-              <div className="col-span-full flex gap-3 mt-2 sm:col-span-2">
-                <Button onClick={openPayloadAdmin} className="w-full">
-                  Open Payload Admin (new tab)
-                </Button>
-                <Button onClick={togglePayloadIframe} className="w-full">
-                  {showPayloadIframe ? 'Hide' : 'Preview'} Payload Admin
-                </Button>
-              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Recent Activities */}
+        {/* Database Status */}
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activities</CardTitle>
-            <CardDescription>Latest system activities</CardDescription>
+            <CardTitle>System Status</CardTitle>
+            <CardDescription>Real-time database connection</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentActivities.map((activity, index) => (
-                <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-green-50 dark:bg-green-950">
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
                   <div>
-                    <p className="font-medium">{activity.action}</p>
-                    <p className="text-sm text-muted-foreground">by {activity.user}</p>
+                    <p className="font-medium text-green-900 dark:text-green-100">MongoDB Connected</p>
+                    <p className="text-sm text-green-700 dark:text-green-300">Database is operational</p>
                   </div>
-                  <span className="text-xs text-muted-foreground">{activity.time}</span>
                 </div>
-              ))}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-3 rounded-lg bg-muted">
+                  <p className="text-sm text-muted-foreground">Products</p>
+                  <p className="text-2xl font-bold">{dashboardData.totalProducts}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-muted">
+                  <p className="text-sm text-muted-foreground">Categories</p>
+                  <p className="text-2xl font-bold">{dashboardData.totalCategories}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-muted">
+                  <p className="text-sm text-muted-foreground">Orders</p>
+                  <p className="text-2xl font-bold">{dashboardData.totalOrders}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-muted">
+                  <p className="text-sm text-muted-foreground">Pending</p>
+                  <p className="text-2xl font-bold text-orange-600">{dashboardData.pendingOrders}</p>
+                </div>
+              </div>
+
+              <Link href="/backendadmin">
+                <Button className="w-full">
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                  View Full Admin Panel
+                </Button>
+              </Link>
             </div>
-            <Button variant="ghost" className="w-full mt-4">
-              <Eye className="h-4 w-4 mr-2" />
-              View All Activities
-            </Button>
           </CardContent>
         </Card>
       </div>
-
-      {/* Inline iframe preview (shown when toggled) */}
-      {showPayloadIframe && (
-        <div className="w-full h-[70vh] bg-white rounded-lg overflow-hidden border">
-          <iframe
-            src="http://localhost:4000/admin"
-            title="Payload Admin Preview"
-            className="w-full h-full"
-            frameBorder="0"
-          />
-        </div>
-      )}
     </div>
   );
 };

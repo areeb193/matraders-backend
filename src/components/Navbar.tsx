@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Menu as MenuIcon, X, Phone, ShoppingCart, LogIn } from "lucide-react";
+import { Menu as MenuIcon, X, Phone, ShoppingCart, LogIn, Search, LogOut, User } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -20,11 +20,13 @@ import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const { getCartCount } = useCart();
+  const { user, logout } = useAuth();
   const cartCount = getCartCount();
   const pathname = usePathname();
 
@@ -163,8 +165,19 @@ const Navbar = () => {
                 </NavigationMenuList>
               </NavigationMenu>
 
-              {/* Cart / Login / Contact */}
+              {/* Search / Cart / Login / Contact */}
               <div className="flex items-center space-x-3 ml-10">
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="sm"
+                  className="text-black hover:text-yellow-300"
+                >
+                  <Link href="/search">
+                    <Search className="h-5 w-5" />
+                  </Link>
+                </Button>
+
                 <Button
                   asChild
                   variant="ghost"
@@ -181,17 +194,35 @@ const Navbar = () => {
                   </Link>
                 </Button>
 
-                <Button
-                  asChild
-                  variant="ghost"
-                  size="sm"
-                  className="text-black hover:text-yellow-300"
-                >
-                  <Link href="/login">
-                    <LogIn className="h-4 w-4 mr-1" />
-                    Login
-                  </Link>
-                </Button>
+                {user ? (
+                  <>
+                    <div className="flex items-center gap-2 px-3 py-1 bg-yellow-400/20 rounded-full">
+                      <User className="h-4 w-4 text-black" />
+                      <span className="text-sm font-semibold text-black">{user.name}</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={logout}
+                      className="text-black hover:text-yellow-300"
+                    >
+                      <LogOut className="h-4 w-4 mr-1" />
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="sm"
+                    className="text-black hover:text-yellow-300"
+                  >
+                    <Link href="/login">
+                      <LogIn className="h-4 w-4 mr-1" />
+                      Login
+                    </Link>
+                  </Button>
+                )}
 
                 <Button
                   asChild

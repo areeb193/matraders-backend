@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -33,25 +33,22 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-
-  // Replace navigate('/admin') with:
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-    // Mock authentication - replace with actual auth logic
-    setTimeout(() => {
-      if (email && password) {
-        // Allow any user to access admin - redirect to admin dashboard
-        router.push("/admin");
-      } else {
-        setError("Please enter both email and password");
-      }
+    try {
+      await login(email, password);
+      // Redirect handled by AuthContext
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Login failed';
+      setError(message);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (

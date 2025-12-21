@@ -1,53 +1,38 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
-import { Button } from '@/app/components/ui/button';
-import { Input } from '@/app/components/ui/input';
-import { Label } from '@/app/components/ui/label';
-import { ArrowLeft, Search, Loader2, Package, Folder, ShoppingCart } from 'lucide-react';
-import Link from 'next/link';
+import React, { useState, useEffect, useRef } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Search,
+  Loader2,
+  ShoppingCart,
+  Package,
+  X,
+  ArrowRight,
+} from "lucide-react";
 
-interface Category {
-  _id: string;
-  name: string;
-  description: string;
-}
-
-interface Product {
+interface SearchProduct {
   _id: string;
   name: string;
   description: string;
   price: number;
-  category: Category;
-  stockQuantity: number;
   image?: string;
-}
-
-interface OrderItem {
-  product: Product | { _id: string; name: string };
-  quantity: number;
-  priceAtTimeOfOrder: number;
-}
-
-interface Order {
-  _id: string;
-  customerName: string;
-  items: OrderItem[];
-  totalAmount: number;
-  status: string;
-}
-
-interface SearchResults {
-  products?: Product[];
-  categories?: Category[];
-  orders?: Order[];
+  stockQuantity: number;
+  category: { name: string } | string;
 }
 
 export default function SearchPage() {
-  const [query, setQuery] = useState('');
-  const [searchType, setSearchType] = useState('all');
-  const [minPrice, setMinPrice] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchProduct[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [maxPrice, setMaxPrice] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
