@@ -181,9 +181,9 @@ const Login = () => {
 
             <div className="text-center space-y-4">
               <p className="text-sm text-muted-foreground">
-                Do not have an account?{" "}
-                <Button variant="link" className="px-0">
-                  Contact our sales team
+                Don&apos;t have an account?{" "}
+                <Button asChild variant="link" className="px-0 font-semibold text-primary">
+                  <Link href="/register">Create new account</Link>
                 </Button>
               </p>
 
