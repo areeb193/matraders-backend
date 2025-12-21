@@ -40,7 +40,17 @@ import Link from 'next/link';
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [dashboardData, setDashboardData] = useState({
+  const [dashboardData, setDashboardData] = useState<{
+    totalProducts: number;
+    totalOrders: number;
+    totalCategories: number;
+    totalRevenue: number;
+    pendingOrders: number;
+    lowStockProducts: number;
+    products: any[];
+    orders: any[];
+    categories: any[];
+  }>({
     totalProducts: 0,
     totalOrders: 0,
     totalCategories: 0,
