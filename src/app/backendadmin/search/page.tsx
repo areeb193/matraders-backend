@@ -36,7 +36,7 @@ export default function SearchPage() {
   const [maxPrice, setMaxPrice] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [results, setResults] = useState<SearchResults | null>(null);
+  const [results, setResults] = useState<any>(null);
   const [counts, setCounts] = useState({ products: 0, categories: 0, orders: 0 });
 
   const handleSearch = async (e: React.FormEvent) => {
