@@ -15,8 +15,10 @@ import ScrollToTop from "@/components/ui/ScrollToTop";
 function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith('/admin');
+  const isBackendAdminPage = pathname?.startsWith('/backendadmin');
 
-  if (isAdminPage) {
+  // Admin pages (both /admin and /backendadmin) - no navbar/footer
+  if (isAdminPage || isBackendAdminPage) {
     return (
       <div className="min-h-screen">
         {children}
@@ -24,6 +26,7 @@ function ConditionalLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
+  // Regular user pages - with navbar/footer
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />

@@ -92,11 +92,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(data.user);
       setupAutoLogout();
 
-      // Redirect based on role
+      // Redirect based on role - use replace to avoid back button issues
       if (data.user.role === 'admin') {
-        router.push('/backendadmin');
+        router.replace('/backendadmin');
       } else {
-        router.push('/');
+        router.replace('/');
       }
     } catch (error) {
       throw error;
@@ -105,6 +105,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Logout function
   const logout = async () => {
+    const isAdmin = user?.role === 'admin';
     try {
       await fetch('/api/auth/logout', {
         method: 'POST',
@@ -116,7 +117,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         clearTimeout(logoutTimer);
       }
       setUser(null);
-      router.push('/');
+      // Admin goes to login, regular users go to home
+      router.push(isAdmin ? '/login' : '/');
     }
   };
 

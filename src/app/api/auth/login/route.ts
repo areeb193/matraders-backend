@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongoose';
 import User from '@/models/User';
-import { signToken, setAuthCookie } from '@/lib/auth';
+import { signToken } from '@/lib/auth';
 
 // Hardcoded admin credentials
 const ADMIN_EMAIL = 'admin@matraders.com';
@@ -28,12 +28,22 @@ export async function POST(req: Request) {
       };
 
       const token = signToken(adminPayload);
-      await setAuthCookie(token);
-
-      return NextResponse.json({
+      const response = NextResponse.json({
+        success: true,
+        message: 'Login successful',
         user: adminPayload,
-        token,
       });
+
+      // Set cookie in response
+      response.cookies.set('auth_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 600, // 10 minutes
+        path: '/',
+      });
+
+      return response;
     }
 
     // Check user in database
@@ -55,12 +65,22 @@ export async function POST(req: Request) {
     };
 
     const token = signToken(userPayload);
-    await setAuthCookie(token);
-
-    return NextResponse.json({
+    const response = NextResponse.json({
+      success: true,
+      message: 'Login successful',
       user: userPayload,
-      token,
     });
+
+    // Set cookie in response
+    response.cookies.set('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 600, // 10 minutes
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
