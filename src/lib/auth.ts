@@ -11,7 +11,6 @@ if (process.env.NODE_ENV === 'production' && process.env.JWT_SECRET === 'ma-trad
 }
 
 const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRY = process.env.JWT_EXPIRY || '600s'; // 10 minutes default
 const COOKIE_MAX_AGE = 600; // 10 minutes in seconds
 
 export interface JWTPayload {
@@ -25,8 +24,8 @@ export interface JWTPayload {
  * Sign a JWT token with user payload
  */
 export function signToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET as string, {
-    expiresIn: JWT_EXPIRY,
+  return jwt.sign(payload, JWT_SECRET as jwt.Secret, {
+    expiresIn: '10m',
   });
 }
 
@@ -35,7 +34,7 @@ export function signToken(payload: JWTPayload): string {
  */
 export function verifyToken(token: string): JWTPayload | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
+    const decoded = jwt.verify(token, JWT_SECRET as jwt.Secret) as JWTPayload;
     return decoded;
   } catch (error) {
     // Don't log details in production to avoid exposing sensitive info

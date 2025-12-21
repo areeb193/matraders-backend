@@ -159,7 +159,7 @@ export default function SearchPage() {
               <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No products found</h3>
               <p className="text-muted-foreground mb-4">
-                No products match your search for "{searchQuery}"
+                No products match your search for &quot;{searchQuery}&quot;
               </p>
               <Button onClick={handleSearchClear} variant="outline">
                 Clear Search
@@ -174,7 +174,7 @@ export default function SearchPage() {
             <div className="mb-6">
               <p className="text-sm text-muted-foreground">
                 Found <span className="font-semibold text-primary">{searchResults.length}</span>{" "}
-                product{searchResults.length !== 1 ? "s" : ""} for "{searchQuery}"
+                product{searchResults.length !== 1 ? "s" : ""} for &quot;{searchQuery}&quot;
               </p>
             </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { productAPI, type Product as APIProduct } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,7 +22,6 @@ import Link from "next/link";
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const { addToCart } = useCart();
   
   const [product, setProduct] = useState<APIProduct | null>(null);
