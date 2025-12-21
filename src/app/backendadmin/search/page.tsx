@@ -16,6 +16,7 @@ import {
   X,
   ArrowRight,
   ArrowLeft,
+  Folder,
 } from "lucide-react";
 
 interface SearchProduct {
