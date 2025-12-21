@@ -98,24 +98,10 @@ export default function SearchPage() {
                 <Label htmlFor="query">Search Query</Label>
                 <Input
                   id="query"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by name, description, customer..."
                 />
-              </div>
-              <div>
-                <Label htmlFor="type">Search In</Label>
-                <select
-                  id="type"
-                  value={searchType}
-                  onChange={(e) => setSearchType(e.target.value)}
-                  className="w-full border rounded p-2 bg-white dark:bg-gray-800"
-                >
-                  <option value="all">All</option>
-                  <option value="products">Products Only</option>
-                  <option value="categories">Categories Only</option>
-                  <option value="orders">Orders Only</option>
-                </select>
               </div>
               <div className="flex gap-2">
                 <div className="flex-1">
