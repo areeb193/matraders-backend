@@ -1,8 +1,17 @@
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
-const JWT_EXPIRY = '600s'; // 10 minutes
+// Validate required environment variables
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is not set. Please add it to .env.local');
+}
+
+if (process.env.NODE_ENV === 'production' && process.env.JWT_SECRET === 'ma-traders-super-secret-jwt-key-2024') {
+  console.warn('WARNING: Using default JWT_SECRET in production. Please change it!');
+}
+
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRY = process.env.JWT_EXPIRY || '600s'; // 10 minutes default
 const COOKIE_MAX_AGE = 600; // 10 minutes in seconds
 
 export interface JWTPayload {
@@ -16,7 +25,7 @@ export interface JWTPayload {
  * Sign a JWT token with user payload
  */
 export function signToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
+  return jwt.sign(payload, JWT_SECRET as string, {
     expiresIn: JWT_EXPIRY,
   });
 }
@@ -29,7 +38,10 @@ export function verifyToken(token: string): JWTPayload | null {
     const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
     return decoded;
   } catch (error) {
-    console.error('JWT verification failed:', error);
+    // Don't log details in production to avoid exposing sensitive info
+    if (process.env.NODE_ENV === 'development') {
+      console.error('JWT verification failed:', error);
+    }
     return null;
   }
 }

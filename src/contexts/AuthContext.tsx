@@ -56,7 +56,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Check authentication status
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/auth/profile');
+      const response = await fetch('/api/auth/profile', {
+        credentials: 'include', // Ensure cookies are sent
+      });
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
@@ -65,7 +67,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(null);
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      // Don't log in production
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Auth check failed:', error);
+      }
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -109,9 +114,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       await fetch('/api/auth/logout', {
         method: 'POST',
+        credentials: 'include',
       });
     } catch (error) {
-      console.error('Logout error:', error);
+      // Don't log in production
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Logout error:', error);
+      }
     } finally {
       if (logoutTimer) {
         clearTimeout(logoutTimer);
